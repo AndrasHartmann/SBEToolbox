@@ -93,17 +93,20 @@ if isempty(iter) || iter == 0
 end
 
 %% MCL Core
+%Better to be full for this ...
+g = full(g);
 
 % Self loop each node
 if (strcmp(a, 'true'))
     g(logical(eye(size(g, 1)))) = 1;
 end
 
+% Sparse the matrix
+g = sparse(g);
+
 i = 0;
 breakCounter = 0;
 while i < iter
-    % Sparse the matrix
-    g = sparse(g);
     
     % Normalize matrix (column wise)
     g = bsxfun(@rdivide, g, sum(g));
