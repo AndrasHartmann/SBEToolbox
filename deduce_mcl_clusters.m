@@ -27,7 +27,8 @@ function [num_clusters, guiOutput] = deduce_mcl_clusters(g, nodes)
 
 deduced_indices = zeros(size(unique(g, 'rows')));
 
-for i = 1:size(unique(g, 'rows'), 1)
+g = unique(g, 'rows');
+for i = 1:size(g, 1)
     if ~isempty(find(g(i, :), 1))
         indices = find(g(i, :));
         for k = 1:length(indices)
@@ -35,7 +36,8 @@ for i = 1:size(unique(g, 'rows'), 1)
         end
     end
 end
-
+% Alternatively this could be used:
+% deduced_indices = full(unique(g,'rows')~=0);
 
 deduced_indices = unique(deduced_indices, 'rows');
 guiOutput = cell(1, size(g, 2));
