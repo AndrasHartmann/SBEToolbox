@@ -41,6 +41,10 @@ for nc = 1:size(deduced_indices, 1)
    if length(nodeIndices) <= 0, continue; end
    num_clusters = num_clusters + 1;
    clusters{num_clusters} =  nodes(nodeIndices)';
+   if length(nodeIndices) < 10||length(nodeIndices)>100, continue; end
+
+       %TODO: socring
+   %score = sum(sum(origG(nodeIndices, nodeIndices)))/ (sum(sum(origG(nodeIndices, :)))+1);
    fprintf(fid, '%d\t1.0\t%s\n',num_clusters, strjoin(nodes(nodeIndices), '\t'));
 
    

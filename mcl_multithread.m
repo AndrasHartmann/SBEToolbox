@@ -94,55 +94,59 @@ end
 
 %% MCL Core
 %Better to be full for this ...
-tic;
+%tic;
 g = full(g);
-toc
+%toc
 
 % Self loop each node
 if (strcmp(a, 'true'))
     g(logical(eye(size(g, 1)))) = 1;
 end
 
-toc
+%toc
 % Sparse the matrix
 %g = sparse(g);
 
 i = 0;
 breakCounter = 0;
 while i < iter
-toc
+%toc
     % Normalize matrix (column wise)
     g = bsxfun(@rdivide, g, sum(g));
     %g = bsxfun(@rdivide, g, sum(g, 2)); <-- row wise % ^ e;
     
-    toc
+    %toc
     % Apply MCL
     g = runMCL(g, e, r);
         
-    toc
+    %toc
     % Do pruning for min value of NaNs
     g(g < n) = 0; 
     
-    toc
+    %toc
     % Do pruning for NaNs
     %g(isnan(g)) = 0;
     
+    %{
     % Get MCL break value
     if isequal(size(unique(g, 'rows'), 1), ...
             getpref('SBEToolbox', 'MCLBreakVal'))
         breakCounter = breakCounter + 1;
         if breakCounter >= 5,  break, end;
     end
+    %}
     
+    %{
     % Set MCL break value
     if (i >= 1)
         setpref('SBEToolbox', 'MCLBreakVal', size(unique(g, 'rows'), 1));
     end
+    %}
     
     %waitbar(i/iter, waitforMCLapplication, sprintf('%s%d',...
         %'Applying MCL Algorithm: Iteration: ', i));
     
-    i = i + 1;
+    i = i + 1
 end
     
 %% Return success or failure of cluster deduction
